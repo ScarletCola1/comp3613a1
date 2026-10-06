@@ -1,0 +1,37 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Create listing{% endblock %}
+
+{% block subpage_content %}
+<main class="container py-2 listings-page">
+  <a class="listing-back-link" href="{{ url_for('landlord_home_view') }}">← Back to dashboard</a>
+  <section class="landlord-form-panel">
+    <h1>Create a listing</h1>
+    <p>Add the details students will see when browsing homes.</p>
+    <form method="post" action="{{ url_for('landlord_listing_create') }}">
+      <div class="mb-3">
+        <label class="form-label" for="title">Listing name</label>
+        <input class="form-control" id="title" name="title" required maxlength="160">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="address">Address</label>
+        <input class="form-control" id="address" name="address" required maxlength="240">
+      </div>
+      <div class="landlord-form-grid">
+        <div class="mb-3">
+          <label class="form-label" for="price_per_month">Price per month</label>
+          <input class="form-control" type="number" id="price_per_month" name="price_per_month" min="1" step="0.01" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="room_type">Room type</label>
+          <input class="form-control" id="room_type" name="room_type" required maxlength="80" placeholder="Studio, one bedroom...">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="available_from">Available from</label>
+          <input class="form-control" type="month" id="available_from" name="available_from" required>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Publish listing</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

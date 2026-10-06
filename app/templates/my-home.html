@@ -1,0 +1,35 @@
+{% extends "authenticated-base.html" %}
+{% block title %}My Home{% endblock %}
+
+{% block subpage_content %}
+<main class="container-fluid py-2 listings-page">
+  <div class="listings-heading">
+    <div>
+      <p class="listings-eyebrow">Tenant portal</p>
+      <h1>My Home</h1>
+      <p class="listings-intro">Your approved stays and listing reviews.</p>
+    </div>
+    <span class="listings-count">{{ bookings|length }} approved</span>
+  </div>
+  {% if bookings %}
+  <div class="listing-grid">
+    {% for booking, listing in bookings %}
+    <article class="listing-card">
+      <div class="listing-card-body">
+        <h2>{{ listing.title }}</h2>
+        <p class="listing-address">{{ listing.address }}</p>
+        <p class="listing-address">Stay: {{ booking.start_month }} to {{ booking.end_month }}</p>
+        <p class="listing-price">${{ "%.0f"|format(listing.price_per_month) }} <span>/ month</span></p>
+        <a class="btn btn-primary listing-view-button" href="{{ url_for('my_home_booking_view', booking_id=booking.bookingid) }}">View stay and review</a>
+        <form method="post" action="{{ url_for('my_home_booking_cancel', booking_id=booking.bookingid) }}" class="mt-2">
+          <button class="btn btn-outline-danger" type="submit">Remove listing</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="listing-empty">Approved stays will appear here.</div>
+  {% endif %}
+</main>
+{% endblock %}

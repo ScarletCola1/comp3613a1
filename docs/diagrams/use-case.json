@@ -1,0 +1,23 @@
+{
+  "system": "Student Accommodation",
+  "actors": [
+    {"name": "Tenant", "side": "left"},
+    {"name": "Landlord", "side": "right"}
+  ],
+  "use_cases": [
+    {
+      "name": "Book a listing",
+      "actors": ["Tenant"],
+      "includes": ["Browse listings"]
+    },
+    {"name": "Browse listings"},
+    {
+      "name": "Review a listing",
+      "actors": ["Tenant"]
+    },
+    {
+      "name": "Add a listing",
+      "actors": ["Landlord"]
+    }
+  ]
+}

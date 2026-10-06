@@ -3,6 +3,7 @@ import threading
 import time
 from contextlib import contextmanager
 
+from sqlalchemy import inspect
 from sqlalchemy.exc import DBAPIError, OperationalError, ProgrammingError
 from sqlmodel import SQLModel, Session, create_engine
 
@@ -38,6 +39,51 @@ def create_db_and_tables() -> None:
     import app.models  # noqa: F401
 
     SQLModel.metadata.create_all(engine)
+    _migrate_review_booking_index()
+
+
+def _migrate_review_booking_index() -> None:
+    """Allow multiple reviews per booking in databases with the old unique index."""
+    if engine.dialect.name != "sqlite":
+        return
+
+    from app.models.review import Review
+
+    inspector = inspect(engine)
+    if not inspector.has_table(Review.__tablename__):
+        return
+
+    booking_index = next(
+        (
+            index
+            for index in Review.__table__.indexes
+            if [column.name for column in index.columns] == ["booking_id"]
+            and not index.unique
+        ),
+        None,
+    )
+    if booking_index is None:
+        return
+
+    stale_unique_indexes = [
+        index
+        for index in inspector.get_indexes(Review.__tablename__)
+        if index.get("unique")
+        and index.get("column_names") == ["booking_id"]
+        and index.get("name") == booking_index.name
+    ]
+    if not stale_unique_indexes:
+        return
+
+    with engine.begin() as connection:
+        quote = connection.dialect.identifier_preparer.quote
+        for index in stale_unique_indexes:
+            name = index.get("name")
+            if name is None:
+                raise RuntimeError("Cannot migrate an unnamed review booking index.")
+            connection.exec_driver_sql(f"DROP INDEX {quote(name)}")
+        booking_index.create(connection, checkfirst=True)
+    logger.info("Migrated review booking index to allow multiple reviews per booking")
 
 
 def drop_all() -> None:

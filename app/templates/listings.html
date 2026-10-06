@@ -1,0 +1,39 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Available listings{% endblock %}
+
+{% block subpage_content %}
+<main class="container-fluid py-2 listings-page">
+  <div class="listings-heading">
+    <div>
+      <p class="listings-eyebrow">Student Accommodation</p>
+      <h1>Find your next home</h1>
+      <p class="listings-intro">Browse student homes near campus.</p>
+    </div>
+    <span class="listings-count">{{ listings|length }} available</span>
+  </div>
+
+  {% if listings %}
+  <div class="listing-grid">
+    {% for listing in listings %}
+    <article class="listing-card">
+      <div class="listing-card-body">
+        <div class="listing-card-title-row">
+          <h2>{{ listing.title }}</h2>
+          <span class="listing-rating" aria-label="Rated {{ listing.averagerating if listing.averagerating > 0 else listing.rating }} out of 5">★ {{ "%.1f"|format(listing.averagerating if listing.averagerating > 0 else listing.rating) }}</span>
+        </div>
+        <p class="listing-address">{{ listing.address }}</p>
+        <div class="listing-meta">
+          <span>{{ listing.room_type }}</span>
+          <span>Available {{ listing.available_from }}</span>
+        </div>
+        <p class="listing-price">${{ "%.0f"|format(listing.price_per_month) }} <span>/ month</span></p>
+        <a class="btn btn-primary listing-view-button" href="{{ url_for('listing_detail_view', listing_id=listing.listingid) }}">View</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="listing-empty">No listings are available right now.</div>
+  {% endif %}
+</main>
+{% endblock %}

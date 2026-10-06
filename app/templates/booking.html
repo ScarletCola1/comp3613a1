@@ -1,0 +1,82 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Book {{ listing.title }}{% endblock %}
+
+{% block subpage_content %}
+<main class="container-fluid py-2 listings-page">
+  <a class="listing-back-link" href="{{ url_for('user_home_view') }}">← Back to listings</a>
+  <section class="booking-panel">
+    <div class="booking-summary">
+      <p class="listings-eyebrow">Listing details</p>
+      <h1>{{ listing.title }}</h1>
+      <p class="listing-address">{{ listing.address }}</p>
+      <p class="booking-rating">★ {{ "%.1f"|format(listing.averagerating if listing.averagerating > 0 else listing.rating) }} / 5</p>
+      <p>{{ listing.room_type }} · Available {{ listing.available_from }}</p>
+      <p class="listing-price">${{ "%.0f"|format(listing.price_per_month) }} <span>/ month</span></p>
+    </div>
+
+    {% if requested %}
+    <div class="alert alert-success" role="status">Your booking request has been sent.</div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('listing_booking_create', listing_id=listing.listingid) }}" class="booking-form">
+      <h2>Request booking</h2>
+      <div class="booking-form-grid">
+        <div>
+          <label class="form-label" for="tenant_name">Name</label>
+          <input class="form-control" id="tenant_name" name="tenant_name" value="{{ user.username }}" required maxlength="120">
+        </div>
+        <div>
+          <label class="form-label" for="age">Age</label>
+          <input class="form-control" type="number" id="age" name="age" min="18" max="120" required>
+        </div>
+        <div>
+          <label class="form-label" for="start_month">Start month</label>
+          <input class="form-control" type="month" id="start_month" name="start_month" required>
+        </div>
+        <div>
+          <label class="form-label" for="end_month">End month</label>
+          <input class="form-control" type="month" id="end_month" name="end_month" required>
+        </div>
+        <div class="booking-form-wide">
+          <label class="form-label" for="message">Message to landlord</label>
+          <textarea class="form-control" id="message" name="message" rows="3" maxlength="1000" placeholder="Introduce yourself or add a note"></textarea>
+        </div>
+      </div>
+      <p class="booking-price-note">
+        Monthly price: ${{ "%.0f"|format(listing.price_per_month) }}.
+        Estimated total: $<output id="estimated_total" data-monthly-price="{{ listing.price_per_month }}">0</output>
+      </p>
+      <button class="btn btn-primary" type="submit">Send booking request</button>
+    </form>
+  </section>
+</main>
+{% endblock %}
+
+{% block subpage_scripts %}
+<script>
+  const startMonth = document.getElementById("start_month");
+  const endMonth = document.getElementById("end_month");
+  const estimate = document.getElementById("estimated_total");
+
+  function updateBookingEstimate() {
+    if (!startMonth.value || !endMonth.value) {
+      estimate.value = "0";
+      return;
+    }
+
+    const [startYear, startIndex] = startMonth.value.split("-").map(Number);
+    const [endYear, endIndex] = endMonth.value.split("-").map(Number);
+    const numberOfMonths = (endYear - startYear) * 12 + endIndex - startIndex + 1;
+    if (numberOfMonths < 1) {
+      estimate.value = "—";
+      return;
+    }
+
+    const total = numberOfMonths * Number(estimate.dataset.monthlyPrice);
+    estimate.value = total.toFixed(2);
+  }
+
+  startMonth.addEventListener("change", updateBookingEstimate);
+  endMonth.addEventListener("change", updateBookingEstimate);
+</script>
+{% endblock %}

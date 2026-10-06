@@ -1,0 +1,72 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Landlord dashboard{% endblock %}
+
+{% block subpage_content %}
+<main class="container-fluid py-2 landlord-page">
+  <div class="landlord-header">
+    <div>
+      <p class="listings-eyebrow">Landlord portal</p>
+      <h1>Property dashboard</h1>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('landlord_listing_new') }}">Create a listing</a>
+  </div>
+
+  <section class="landlord-requests" aria-labelledby="requests-heading">
+    <h2 id="requests-heading">New booking requests <span class="badge text-bg-primary">{{ pending_requests|length }}</span></h2>
+    {% if pending_requests %}
+    <div class="landlord-request-list">
+      {% for booking, listing in pending_requests %}
+      <article class="landlord-request-card">
+        <div class="landlord-request-summary">
+          <p class="request-status">PENDING REQUEST</p>
+          <h3>{{ listing.title }}</h3>
+          <p>{{ booking.tenant_name }} · Age {{ booking.age }}</p>
+          <p>{{ booking.start_month }} to {{ booking.end_month }}</p>
+          {% if booking.message %}<p class="request-message">{{ booking.message }}</p>{% endif %}
+        </div>
+        <div class="request-actions">
+          <form method="post" action="{{ url_for('landlord_booking_decision', booking_id=booking.bookingid, decision='approved') }}">
+            <button class="btn btn-primary" type="submit">Approve</button>
+          </form>
+          <form method="post" action="{{ url_for('landlord_booking_decision', booking_id=booking.bookingid, decision='rejected') }}">
+            <button class="btn btn-outline-secondary" type="submit">Deny</button>
+          </form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="landlord-empty">No new booking requests.</p>
+    {% endif %}
+  </section>
+
+  <section class="landlord-listings" aria-labelledby="my-listings-heading">
+    <h2 id="my-listings-heading">My listings</h2>
+    {% if listings %}
+    <div class="listing-grid">
+      {% for listing in listings %}
+      <article class="listing-card">
+        <div class="listing-card-body">
+          <div class="listing-card-title-row">
+            <h3>{{ listing.title }}</h3>
+            <span class="listing-rating">★ {{ "%.1f"|format(listing.averagerating if listing.averagerating > 0 else listing.rating) }}</span>
+          </div>
+          <p class="listing-address">{{ listing.address }}</p>
+          <p class="listing-price">${{ "%.0f"|format(listing.price_per_month) }} <span>/ month</span></p>
+          {% if listing.status != "removed" %}
+          <form method="post" action="{{ url_for('landlord_listing_delete', listing_id=listing.listingid) }}" onsubmit="return confirm('Remove this listing from student search? Existing booking history will be kept.');">
+            <button class="btn btn-outline-danger" type="submit">Delete listing</button>
+          </form>
+          {% else %}
+          <span class="badge text-bg-secondary">Removed from search</span>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="landlord-empty">You have not created any listings yet.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

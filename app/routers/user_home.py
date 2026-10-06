@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi import status
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+from app.dependencies.auth import AuthDep
 from app.dependencies.session import SessionDep
-from app.dependencies.auth import AuthDep, IsUserLoggedIn, get_current_user, is_admin
+from app.repositories.listing import ListingRepository
+from app.services.listing_service import ListingService
 from . import router, templates
 
 
@@ -10,12 +11,14 @@ from . import router, templates
 async def user_home_view(
     request: Request,
     user: AuthDep,
-    db:SessionDep
+    db: SessionDep,
 ):
+    listings = ListingService(ListingRepository(db)).list_published_listings()
     return templates.TemplateResponse(
-        request=request, 
-        name="app.html",
+        request=request,
+        name="listings.html",
         context={
-            "user": user
-        }
+            "user": user,
+            "listings": listings,
+        },
     )

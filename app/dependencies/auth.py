@@ -53,3 +53,15 @@ async def is_admin_dep(user: AuthDep):
     return user
 
 AdminDep = Annotated[User, Depends(is_admin_dep)]
+
+
+async def is_landlord_dep(user: AuthDep) -> User:
+    if user.role != "landlord":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Landlord access required",
+        )
+    return user
+
+
+LandlordDep = Annotated[User, Depends(is_landlord_dep)]

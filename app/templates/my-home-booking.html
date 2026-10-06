@@ -1,0 +1,50 @@
+{% extends "authenticated-base.html" %}
+{% block title %}My stay — {{ listing.title }}{% endblock %}
+
+{% block subpage_content %}
+<main class="container-fluid py-2 listings-page">
+  <a class="listing-back-link" href="{{ url_for('my_home_view') }}">← Back to My Home</a>
+  <section class="booking-panel">
+    <div class="booking-summary">
+      <p class="listings-eyebrow">Approved stay</p>
+      <h1>{{ listing.title }}</h1>
+      <p class="listing-address">{{ listing.address }}</p>
+      <p class="listing-rating">★ {{ "%.1f"|format(listing.averagerating if listing.averagerating > 0 else listing.rating) }} / 5</p>
+      <p>{{ listing.room_type }} · {{ booking.start_month }} to {{ booking.end_month }}</p>
+      <p class="listing-price">${{ "%.0f"|format(listing.price_per_month) }} <span>/ month</span></p>
+    </div>
+    <div>
+      <h2>Review this listing</h2>
+      <form method="post" action="{{ url_for('my_home_review_create', booking_id=booking.bookingid) }}">
+        <div class="mb-3">
+          <label class="form-label" for="rating">Your rating</label>
+          <select class="form-select" id="rating" name="rating" required>
+            <option value="">Choose 1–5</option>
+            {% for score in range(1, 6) %}
+            <option value="{{ score }}">{{ score }} / 5</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="body">Comment</label>
+          <textarea class="form-control" id="body" name="body" rows="4" required maxlength="2000" placeholder="Share your experience"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit review</button>
+      </form>
+    </div>
+  </section>
+  {% if reviews %}
+  <section class="landlord-listings">
+    <h2>Reviews for this stay</h2>
+    {% for review in reviews %}
+    <article class="listing-card mb-3">
+      <div class="listing-card-body">
+        <strong>{{ review.rating }} / 5</strong>
+        <p class="mb-0">{{ review.body }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

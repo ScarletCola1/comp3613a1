@@ -1,16 +1,18 @@
 :root {
-  /* Phase 5 theming: Guide overwrites these from docs/report.md preferences */
-  --brand-name: "FastStarter";
-  --brand-bg: #0c1218;
-  --brand-surface: #f7f4ef;
-  --brand-ink: #14202b;
-  --brand-muted: #6a7a88;
-  --brand-accent: #c45c26;
-  --brand-accent-2: #2a6f6b;
-  --brand-sidebar: #14202b;
-  --brand-sidebar-text: #a8b4bf;
-  --brand-font-display: "Fraunces", Georgia, serif;
-  --brand-font-body: "Source Sans 3", "Segoe UI", sans-serif;
+  /* Phase 5 theming: professional blue-and-white identity */
+  --brand-name: "Student Accommodation";
+  --brand-bg: #edf5ff;
+  --brand-surface: #ffffff;
+  --brand-ink: #0d1b2a;
+  --brand-muted: #5f728c;
+  --brand-accent: #0f5bd9;
+  --brand-accent-strong: #0a3d9c;
+  --brand-accent-soft: #dfeeff;
+  --brand-accent-2: #6ea8ff;
+  --brand-sidebar: #0d1b2a;
+  --brand-sidebar-text: #d8e6ff;
+  --brand-font-display: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --brand-font-body: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --brand-radius: 0.85rem;
 }
 
@@ -40,10 +42,8 @@ body {
   grid-template-rows: auto 1fr auto;
   color: var(--brand-surface);
   background:
-    linear-gradient(160deg, rgba(12, 18, 24, 0.55), rgba(12, 18, 24, 0.82)),
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(42, 111, 107, 0.45), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(196, 92, 38, 0.28), transparent 50%),
-    linear-gradient(180deg, #1a2834 0%, #0c1218 100%);
+    linear-gradient(135deg, rgba(12, 67, 160, 0.92), rgba(17, 93, 214, 0.82)),
+    linear-gradient(180deg, #edf5ff 0%, #dfeeff 100%);
   position: relative;
   overflow: hidden;
 }
@@ -53,12 +53,13 @@ body {
   position: absolute;
   inset: 0;
   background-image:
+    linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)),
     repeating-linear-gradient(
       -18deg,
       transparent,
-      transparent 48px,
-      rgba(247, 244, 239, 0.025) 48px,
-      rgba(247, 244, 239, 0.025) 49px
+      transparent 46px,
+      rgba(255, 255, 255, 0.035) 46px,
+      rgba(255, 255, 255, 0.035) 47px
     );
   pointer-events: none;
 }
@@ -98,10 +99,10 @@ body {
 }
 
 .landing-kicker {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: color-mix(in srgb, var(--brand-surface) 65%, var(--brand-accent-2));
+  color: rgba(255,255,255,0.8);
   margin: 0 0 1rem;
 }
 
@@ -143,24 +144,25 @@ body {
 }
 
 .btn-landing-primary {
-  background: var(--brand-accent);
-  color: #fff8f3;
+  background: #ffffff;
+  color: var(--brand-accent);
+  box-shadow: 0 10px 25px rgba(9, 30, 77, 0.2);
 }
 
 .btn-landing-primary:hover {
-  background: color-mix(in srgb, var(--brand-accent) 85%, #000);
-  color: #fff;
+  background: #f2f8ff;
+  color: var(--brand-accent-strong);
 }
 
 .btn-landing-ghost {
-  background: transparent;
+  background: rgba(255,255,255,0.06);
   color: var(--brand-surface);
-  border-color: color-mix(in srgb, var(--brand-surface) 45%, transparent);
+  border-color: rgba(255,255,255,0.32);
 }
 
 .btn-landing-ghost:hover {
-  border-color: var(--brand-surface);
-  background: color-mix(in srgb, var(--brand-surface) 8%, transparent);
+  border-color: rgba(255,255,255,0.68);
+  background: rgba(255,255,255,0.12);
   color: var(--brand-surface);
 }
 
@@ -178,9 +180,9 @@ body {
   right: -6%;
   top: 18%;
   background:
-    radial-gradient(circle at 35% 35%, rgba(247, 244, 239, 0.18), transparent 55%),
-    radial-gradient(circle at 70% 70%, rgba(42, 111, 107, 0.5), transparent 60%),
-    rgba(196, 92, 38, 0.15);
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.32), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(112, 178, 255, 0.44), transparent 60%),
+    rgba(255,255,255,0.12);
   filter: blur(2px);
   animation: landing-drift 14s ease-in-out infinite alternate;
   pointer-events: none;
@@ -192,9 +194,12 @@ body {
   right: auto;
   top: auto;
   bottom: 12%;
-  opacity: 0.7;
+  opacity: 0.85;
   animation-duration: 18s;
   animation-direction: alternate-reverse;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.3), transparent 55%),
+    rgba(255,255,255,0.14);
 }
 
 @keyframes landing-drift {
@@ -220,8 +225,8 @@ body {
   justify-content: center;
   padding: 1.5rem;
   background:
-    radial-gradient(ellipse at top left, color-mix(in srgb, var(--brand-accent-2) 35%, transparent), transparent 55%),
-    radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--brand-accent) 28%, transparent), transparent 50%),
+    radial-gradient(ellipse at top left, rgba(111, 160, 255, 0.35), transparent 45%),
+    radial-gradient(ellipse at bottom right, rgba(15, 91, 217, 0.2), transparent 50%),
     var(--brand-bg);
 }
 
@@ -231,7 +236,8 @@ body {
   color: var(--brand-ink);
   border-radius: var(--brand-radius);
   padding: 2rem 1.75rem;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 18px 50px rgba(13, 27, 42, 0.12);
+  border: 1px solid rgba(15, 91, 217, 0.08);
 }
 
 .auth-panel .brand-wordmark {
@@ -270,4 +276,326 @@ body {
 
 .auth-back:hover {
   color: var(--brand-accent);
+}
+
+/* Listing cards */
+.listings-page {
+  color: #111827;
+  background: #fff;
+  min-height: 100%;
+}
+
+.listings-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.listings-heading h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+}
+
+.listings-eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--brand-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.listings-intro {
+  margin: 0.45rem 0 0;
+  color: #111827;
+}
+
+.listings-count {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #111827;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.25rem;
+}
+
+.listing-card {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--brand-radius);
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+}
+
+.listing-card-body {
+  padding: 1rem;
+}
+
+.listing-card-title-row {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.listing-card h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.listing-rating {
+  flex: 0 0 auto;
+  color: #111827;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.listing-address {
+  margin: 0.55rem 0 0.9rem;
+  color: #111827;
+  font-size: 0.92rem;
+}
+
+.listing-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: #111827;
+  font-size: 0.8rem;
+}
+
+.listing-meta span {
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: #f3f6fb;
+}
+
+.listing-price {
+  margin: 1rem 0 0;
+  color: #111827;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.listing-price span {
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.listing-empty {
+  padding: 2rem;
+  border-radius: var(--brand-radius);
+  background: #fff;
+  color: #111827;
+  text-align: center;
+}
+
+.listing-view-button {
+  display: inline-block;
+  min-width: 6rem;
+  margin-top: 0.85rem;
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+}
+
+.listing-back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--brand-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.booking-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 2rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--brand-radius);
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+}
+
+.booking-panel h1,
+.booking-panel h2 {
+  color: #111827;
+}
+
+.booking-panel h1 {
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+}
+
+.booking-panel h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+}
+
+.booking-rating {
+  color: #111827;
+  font-weight: 700;
+}
+
+.booking-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+
+.booking-form-wide {
+  grid-column: 1 / -1;
+}
+
+.booking-price-note {
+  margin: 1rem 0;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.landlord-page {
+  color: #111827;
+}
+
+.landlord-page h1,
+.landlord-page h2,
+.landlord-page h3 {
+  color: #111827;
+}
+
+.landlord-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.landlord-requests,
+.landlord-listings,
+.landlord-form-panel {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--brand-radius);
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
+}
+
+.landlord-requests h2,
+.landlord-listings h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.landlord-request-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.landlord-request-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #dbe7f7;
+  border-left: 4px solid var(--brand-accent);
+  border-radius: 0.65rem;
+  background: #fff;
+}
+
+.landlord-request-summary h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.landlord-request-summary p {
+  margin: 0.2rem 0;
+}
+
+.request-status {
+  color: var(--brand-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.request-message,
+.landlord-empty {
+  color: #111827;
+}
+
+.request-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.landlord-listings {
+  margin-top: 1.25rem;
+}
+
+.landlord-form-panel {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.landlord-form-panel h1 {
+  color: #111827;
+  font-size: 1.8rem;
+}
+
+.landlord-form-panel p {
+  color: #111827;
+}
+
+.landlord-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+
+@media (max-width: 576px) {
+  .listings-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .booking-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-form-wide {
+    grid-column: auto;
+  }
+
+  .landlord-header,
+  .landlord-request-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .landlord-form-grid {
+    grid-template-columns: 1fr;
+  }
 }

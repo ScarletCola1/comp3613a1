@@ -50,6 +50,7 @@ def cmd_seed(args: argparse.Namespace) -> None:
     """Insert demo users.
 
     bob / bobpass       (regular_user)
+    landlord / landlordpass (landlord)
     admin / adminpass   (admin)
     """
     from app.database import ensure_db_and_tables, get_cli_session
@@ -62,6 +63,7 @@ def cmd_seed(args: argparse.Namespace) -> None:
 
     demo_users = [
         ("bob", "bob@example.com", "bobpass", "regular_user"),
+        ("landlord", "landlord@example.com", "landlordpass", "landlord"),
         ("admin", "admin@example.com", "adminpass", "admin"),
     ]
 
@@ -87,7 +89,7 @@ def cmd_seed(args: argparse.Namespace) -> None:
             created += 1
 
     print(f"Seed done — created {created}, skipped {skipped}.")
-    print("Login with bob/bobpass or admin/adminpass")
+    print("Login with bob/bobpass, landlord/landlordpass, or admin/adminpass")
 
 
 def cmd_run(args: argparse.Namespace) -> None:

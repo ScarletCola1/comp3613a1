@@ -15,10 +15,18 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    from app.database import ensure_db_and_tables
+    from app.database import ensure_db_and_tables, get_cli_session
 
     # First boot on Render often races the free Postgres instance.
     ensure_db_and_tables()
+    from app.repositories.user import UserRepository
+    from app.repositories.listing import ListingRepository
+    from app.services.listing_service import ListingService
+
+    with get_cli_session() as db:
+        landlord = UserRepository(db).get_by_username("landlord")
+        if landlord is not None and landlord.id is not None:
+            ListingService(ListingRepository(db)).ensure_demo_listings(landlord.id)
     yield
 
 
